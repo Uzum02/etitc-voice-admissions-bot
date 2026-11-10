@@ -1,0 +1,172 @@
+{
+  "institucion": "Escuela Tecnológica Instituto Técnico Central (ETITC)",
+  "departamento": "Admisiones, Registro y Control Académico",
+  "version_base_conocimiento": "2026-2",
+  "perfil_voz_estudiante": {
+    "nombre_guia": "Camila (Estudiante Monitora de Ingeniería de Sistemas - 7mo Semestre)",
+    "saludo_inicial": "¡Hola! Qué tal, hablas con Camila, estudiante monitora de admisiones de la ETITC.",
+    "muletillas_permitidas": [
+      "¡Con mucho gusto compañero!",
+      "Mira, según la resolución oficial de admisiones de la Escuela:",
+      "Recuerda que puedes acercarte a la oficina en el centro o escribirnos si tienes otra duda."
+    ],
+    "velocidad_wpm": 145,
+    "idioma_codigo": "es-CO"
+  },
+  "respuesta_fallback": {
+    "intent_id": "FALLBACK_INSTITUCIONAL",
+    "categoria": "Derivación a Atención Humana",
+    "respuesta_oficial": "Como monitor estudiantil de la ETITC solo puedo brindarte información verificada de nuestro reglamento de admisiones vigente. Para tu consulta específica, te invito a comunicarte directamente con la Oficina de Admisiones y Registro al correo admisiones@itc.edu.co o al PBX (601) 344 3000 ext. 120 en la Calle 13 # 16-74, Bogotá.",
+    "enlaces_oficiales": [
+      "https://itc.edu.co/es/admisiones"
+    ]
+  },
+  "intenciones": [
+    {
+      "intent_id": "PROGRAMAS_ACADEMICOS",
+      "categoria": "Oferta Académica",
+      "keywords": [
+        "programas",
+        "carreras",
+        "ingenieria",
+        "ingenierias",
+        "tecnico",
+        "tecnologia",
+        "sistemas",
+        "mecatronica",
+        "electromecanica",
+        "procesos",
+        "estudiar",
+        "ciclos",
+        "propedeuticos"
+      ],
+      "preguntas_ejemplo": [
+        "¿Qué carreras o ingenierías ofrecen en la ETITC?",
+        "¿Cómo funcionan los ciclos propedéuticos en la escuela?"
+      ],
+      "respuesta_oficial": "En la ETITC ofrecemos programas de educación superior por Ciclos Propedéuticos (Técnico Profesional, Tecnológico y Profesional Universitario) en Ingeniería de Sistemas, Ingeniería Mecatrónica, Ingeniería Electromecánica, Ingeniería de Procesos Industriales y Diseño de Máquinas y Productos Industriales. Esto te permite obtener tres títulos a lo largo de tu formación.",
+      "enlaces_oficiales": [
+        "https://itc.edu.co/es/programas-academicos"
+      ]
+    },
+    {
+      "intent_id": "REQUISITOS_INSCRIPCION",
+      "categoria": "Requisitos de Admisión",
+      "keywords": [
+        "requisitos",
+        "documentos",
+        "papeles",
+        "icfes",
+        "saber 11",
+        "bachiller",
+        "diploma",
+        "inscribirme",
+        "inscripcion",
+        "necesito"
+      ],
+      "preguntas_ejemplo": [
+        "¿Cuáles son los requisitos y documentos para inscribirme?",
+        "¿Qué puntaje del ICFES piden para entrar?"
+      ],
+      "respuesta_oficial": "Para inscribirte a primer semestre en la ETITC necesitas: 1) Haber presentado las pruebas de Estado Saber 11 (ICFES), 2) Copia del título de bachiller o acta de grado, 3) Documento de identidad vigente por ambas caras, 4) Diligenciar el formulario de inscripción en línea en el portal oficial y 5) Comprobante de pago de los derechos de inscripción.",
+      "enlaces_oficiales": [
+        "https://itc.edu.co/es/admisiones/requisitos"
+      ]
+    },
+    {
+      "intent_id": "COSTOS_Y_BECAS",
+      "categoria": "Derechos Pecuniarios y Beneficios",
+      "keywords": [
+        "costo",
+        "costos",
+        "precio",
+        "cuanto vale",
+        "semestre",
+        "pin",
+        "matricula cero",
+        "politica de gratuidad",
+        "beca",
+        "becas",
+        "descuento",
+        "pagar"
+      ],
+      "preguntas_ejemplo": [
+        "¿Cuánto cuesta el PIN de inscripción y el semestre?",
+        "¿La ETITC aplica a Matrícula Cero o Política de Gratuidad?"
+      ],
+      "respuesta_oficial": "El derecho de inscripción equivale aproximadamente al 10% de un SMMLV vigente. Al ser una Institución de Educación Superior Pública de carácter nacional, los estudiantes de pregrado que cumplan los requisitos del Ministerio de Educación Nacional pueden acceder a la Política de Gratuidad en la Matrícula (Puedo Estudiar), además de descuentos por certificado electoral.",
+      "enlaces_oficiales": [
+        "https://itc.edu.co/es/admisiones/derechos-pecuniarios"
+      ]
+    },
+    {
+      "intent_id": "FECHAS_CALENDARIO",
+      "categoria": "Calendario Académico",
+      "keywords": [
+        "fechas",
+        "cuando",
+        "calendario",
+        "plazo",
+        "abren",
+        "cierran",
+        "convocatoria",
+        "resultados",
+        "admitidos"
+      ],
+      "preguntas_ejemplo": [
+        "¿Cuándo abren las inscripciones para el próximo semestre?",
+        "¿Cuándo salen las listas de admitidos?"
+      ],
+      "respuesta_oficial": "Las convocatorias de admisión en la ETITC se abren dos veces al año: entre abril y junio para el segundo periodo académico, y entre septiembre y noviembre para el primer periodo del año siguiente. La publicación de admitidos se realiza en el portal web institucional según las fechas de la resolución de calendario académico vigente.",
+      "enlaces_oficiales": [
+        "https://itc.edu.co/es/calendario-academico"
+      ]
+    },
+    {
+      "intent_id": "HORARIOS_Y_JORNADAS",
+      "categoria": "Jornadas y Ubicación",
+      "keywords": [
+        "horarios",
+        "jornada",
+        "jornadas",
+        "nocturna",
+        "diurna",
+        "noche",
+        "dia",
+        "donde queda",
+        "ubicacion",
+        "direccion",
+        "sede"
+      ],
+      "preguntas_ejemplo": [
+        "¿Tienen jornada nocturna para quienes trabajamos?",
+        "¿Dónde queda ubicada la sede de la ETITC?"
+      ],
+      "respuesta_oficial": "La ETITC cuenta con jornada diurna (6:00 a.m. a 2:00 p.m.) y jornada nocturna (6:00 p.m. a 10:00 p.m. de lunes a viernes y sábados en la mañana), pensada especialmente para estudiantes que trabajan. Nuestra sede principal está ubicada en el centro histórico de Bogotá, en la Calle 13 # 16-74, cerca de la estación de TransMilenio Ricaurte y San Façon.",
+      "enlaces_oficiales": [
+        "https://itc.edu.co/es/nuestra-institucion/ubicacion"
+      ]
+    },
+    {
+      "intent_id": "HOMOLOGACIONES_TRANSFERENCIAS",
+      "categoria": "Homologaciones y SENA",
+      "keywords": [
+        "homologacion",
+        "homologar",
+        "sena",
+        "transferencia",
+        "otra universidad",
+        "tecnologo",
+        "convenio"
+      ],
+      "preguntas_ejemplo": [
+        "Soy egresado del SENA, ¿puedo homologar materias en la ETITC?",
+        "¿Cómo solicito transferencia externa?"
+      ],
+      "respuesta_oficial": "Sí, la ETITC realiza procesos de transferencia externa y estudio de homologación para egresados del SENA y de otras IES reconocidas por el Ministerio de Educación. Debes inscribirte bajo la modalidad de Transferencia y radicar los certificados originales de notas y contenidos programáticos (syllabus) para aval del Consejo de Facultad.",
+      "enlaces_oficiales": [
+        "https://itc.edu.co/es/admisiones/transferencias-y-homologaciones"
+      ]
+    }
+  ]
+}
