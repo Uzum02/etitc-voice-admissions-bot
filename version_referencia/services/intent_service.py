@@ -1,7 +1,6 @@
 """
 Motor Determinista de Intenciones Institucionales (Cero Alucinaciones).
-Clasifica la consulta normalizada del aspirante contra la base de conocimiento oficial
-de Admisiones de la ETITC. Jamás genera texto libre fuera del JSON institucional.
+VERSIÓN PLANTILLA PARA ESTUDIANTES.
 """
 
 import json
@@ -21,17 +20,12 @@ class IntentService:
         self.kb_data: Dict[str, Any] = self._cargar_base_conocimiento()
 
     def _cargar_base_conocimiento(self) -> Dict[str, Any]:
-        """Lee y valida la estructura del archivo JSON con las FAQs de Admisiones."""
+        """Lee el archivo JSON con las preguntas frecuentes oficiales de la ETITC."""
         if not self.json_path.exists():
             raise FileNotFoundError(f"No se encontró la base de conocimiento en: {self.json_path}")
 
         with open(self.json_path, mode="r", encoding="utf-8") as file:
-            data = json.load(file)
-
-        if "intenciones" not in data or "respuesta_fallback" not in data:
-            raise ValueError("El archivo JSON institucional no contiene las llaves obligatorias.")
-
-        return data
+            return json.load(file)
 
     def obtener_catalogo_intenciones(self) -> List[Dict[str, Any]]:
         """Retorna el listado resumido de intenciones soportadas para consulta pública."""
@@ -45,54 +39,75 @@ class IntentService:
             for item in self.kb_data.get("intenciones", [])
         ]
 
-    def resolver_intencion(self, texto_normalizado: str) -> IntentMatchResult:
-        """
-        Evalúa determinísticamente qué intención institucional corresponde al texto normalizado.
-        Si ninguna intención supera el umbral mínimo (al menos 1 keyword detectada),
-        retorna obligatoriamente la respuesta institucional de Fallback para evitar alucinaciones.
-        """
-        tokens_consulta = set(texto_normalizado.split())
-        mejor_intencion: Dict[str, Any] | None = None
-        mejores_keywords: List[str] = []
-        mejor_puntaje: float = 0.0
+   
+def resolver_intencion(self, texto_normalizado: str) -> IntentMatchResult:
+    """
+    Busca la intención institucional que mejor coincide con la consulta
+    sin inventar ni modificar ninguna respuesta oficial.
+    """
 
-        for intencion in self.kb_data.get("intenciones", []):
-            keywords_coincidentes: List[str] = []
-            for kw in intencion.get("keywords", []):
-                kw_norm = STTService.normalizar_texto(kw)
-                # Verifica coincidencia exacta de frase o de palabra individual
-                if (" " in kw_norm and kw_norm in texto_normalizado) or (
-                    " " not in kw_norm and kw_norm in tokens_consulta
-                ):
-                    keywords_coincidentes.append(kw)
+    # 1. Separar la consulta en palabras
+    tokens_consulta = set(texto_normalizado.split())
 
-            if keywords_coincidentes:
-                # Puntaje normalizado: 1 keyword = 0.55, 2 keywords = 0.80, 3+ keywords = 0.98
-                cantidad = len(keywords_coincidentes)
-                puntaje = min(0.35 + (cantidad * 0.22), 0.99)
-                if puntaje > mejor_puntaje:
-                    mejor_puntaje = round(puntaje, 2)
-                    mejor_intencion = intencion
-                    mejores_keywords = keywords_coincidentes
+    mejor_intencion = None
+    mejores_coincidencias = []
+    mejor_puntaje = 0.0
 
-        if mejor_intencion is None:
-            fallback = self.kb_data["respuesta_fallback"]
-            return IntentMatchResult(
-                intent_id=fallback["intent_id"],
-                categoria=fallback["categoria"],
-                puntaje_coincidencia=0.0,
-                keywords_detectadas=[],
-                respuesta_institucional_exacta=fallback["respuesta_oficial"],
-                enlaces_oficiales=fallback.get("enlaces_oficiales", []),
-                es_fallback=True
-            )
+    # 2. Recorrer las intenciones disponibles en el JSON
+    for intencion in self.kb_data.get("intenciones", []):
+
+        coincidencias = []
+
+        # 3. Comparar cada palabra clave
+        for kw in intencion.get("keywords", []):
+
+            keyword_normalizada = STTService.normalizar_texto(kw)
+
+            if not keyword_normalizada:
+                continue
+
+            # Comprobar frases compuestas
+            if " " in keyword_normalizada:
+                coincide = keyword_normalizada in texto_normalizado
+
+            # Comprobar palabras individuales
+            else:
+                coincide = keyword_normalizada in tokens_consulta
+
+            if coincide:
+                coincidencias.append(kw)
+
+        # 4. Calcular el puntaje de coincidencia
+        puntaje = min(0.35 + len(coincidencias) * 0.22, 0.99)
+
+        # Conservar la intención con mayor puntaje
+        if coincidencias and puntaje > mejor_puntaje:
+            mejor_intencion = intencion
+            mejores_coincidencias = coincidencias
+            mejor_puntaje = puntaje
+
+    # 5. Aplicar la regla anti-alucinaciones
+    if mejor_intencion is None:
+
+        fallback = self.kb_data["respuesta_fallback"]
 
         return IntentMatchResult(
-            intent_id=mejor_intencion["intent_id"],
-            categoria=mejor_intencion["categoria"],
-            puntaje_coincidencia=mejor_puntaje,
-            keywords_detectadas=mejores_keywords,
-            respuesta_institucional_exacta=mejor_intencion["respuesta_oficial"],
-            enlaces_oficiales=mejor_intencion.get("enlaces_oficiales", []),
-            es_fallback=False
+            intent_id=fallback["intent_id"],
+            categoria=fallback["categoria"],
+            puntaje_coincidencia=0.0,
+            keywords_detectadas=[],
+            respuesta_institucional_exacta=fallback["respuesta_oficial"],
+            enlaces_oficiales=fallback.get("enlaces_oficiales", []),
+            es_fallback=True
         )
+
+    # 6. Devolver la intención ganadora
+    return IntentMatchResult(
+        intent_id=mejor_intencion["intent_id"],
+        categoria=mejor_intencion["categoria"],
+        puntaje_coincidencia=mejor_puntaje,
+        keywords_detectadas=mejores_coincidencias,
+        respuesta_institucional_exacta=mejor_intencion["respuesta_oficial"],
+        enlaces_oficiales=mejor_intencion.get("enlaces_oficiales", []),
+        es_fallback=False
+    )
